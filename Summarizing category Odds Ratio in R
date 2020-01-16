@@ -1,0 +1,22 @@
+title: "Trend estimation for categorized OR"
+author: "Yuliang"
+date: "12/18/2019"
+output: html_document
+---
+## If the numbers of cases and controls are available, e.g. paper NO.4 
+  The prerequisites are: 1) there are at least three dose categories; 2) one category serving as referent;
+```{r}
+## Calculate the overall OR for paper NO.4.
+library(readr)
+No_4_categorized <- read_csv("No_4_categorized.csv")                  # import data of paper No.4               
+# the names for columns are given the same as the parameters in the "dosresmeta" function for convenience.
+
+require(dosresmeta)
+dr_4 <- dosresmeta(formula = logor~dose, type = "cc", cases = cases, 
+                   n = n, lb = lb, ub = ub,data = No_4_categorized)    # applied generalized least square to estimate the trend
+
+summary(dr_4)                                                          # give a summary of the results
+predict(dr_4, delta = 10，expo = TRUE )                                
+# based on the results, estimate a OR for every "delta" unit increase, "expo = TRUE" will return the OR instead of logOR.
+
+```
